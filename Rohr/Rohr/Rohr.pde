@@ -24,18 +24,23 @@ void draw () {
 }
 
 void roboterposfullen() {
-  //PVector pos;
+  PVector sp;
   pos = new PVector(0, 0, 0);
   for (int i = 0; i<10; i++) {
     pos = new PVector(300*cos(i*20*TWO_PI/360), 300*sin(i*20*TWO_PI/360), 0);
     points.add(new RobPoint(pos, 100));
-    
   }
-  pos.y+=10;
-  for (int i = 0; i<10; i++) {
+  for (int i = 1; i<10; i++) {
     pos.y -= i*20;
     points.add(new RobPoint(pos, 80));
-    
+  }
+  sp = pos.copy();
+  for (int i = 1; i<16; i++)
+  {
+    pos.x = sp.x;
+    pos.y = sp.y-400*sin(i*10*TWO_PI/360);
+    pos.z = sp.z+400-400*cos(i*10*TWO_PI/360);
+    points.add(new RobPoint(pos, 90));
   }
   dirbestimmen();
 }
@@ -51,8 +56,9 @@ void dirbestimmen() {
 }
 
 void rohrzeichnen() {
-  //fill(1,0,1);
-  //noStroke();
+
+  //fill(0,0,1,0.1);
+  noStroke();
   beginShape(QUADS);
   for (int i = 1; i < points.size(); i++) {
     RobPoint prevpoint = points.get(i-1);
@@ -68,10 +74,11 @@ void rohrzeichnen() {
     xprev.normalize();
     yprev.normalize();
 
-    int anzEcken = 36;
+    int anzEcken = 18;
     for (int j = 0; j <= anzEcken; j ++) {
       PVector zw;
       float phi = (j*(360/anzEcken)*TWO_PI)/360;
+
 
       zw = Ecke(newpoint.pos, xnew, ynew, newpoint.rad, phi);
       vertex(zw.x, zw.y, zw.z);
